@@ -1,0 +1,7 @@
+# Excluded files & folders
+/dist
+/node_modules
+.env.local
+.env
+
+# 👇 Write your ignored files/folders here 👇
