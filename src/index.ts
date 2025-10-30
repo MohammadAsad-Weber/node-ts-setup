@@ -1,3 +1,4 @@
 import { greet } from "@/utilities/greet-user";
 
-for (let index = 1; index <= 5; index++) greet();
+const names = ["Alice", "Charlie", "David", "George", "Hannah", "Jack"];
+for (const name of names) greet(name);
