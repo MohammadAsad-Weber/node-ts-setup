@@ -1,34 +1,43 @@
 {
+  "include": ["./src"],
+  "exclude": ["./node_modules", "./dist", "**/*.test.ts"],
+
   "compilerOptions": {
-    "lib": ["ES2020"],
-    "target": "ES2020",
+    "lib": ["ES2022"],
+    "target": "ES2022",
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
 
-    /* Strictness and safety checks */
-    "strict": true,
+    // Linting
     "noUnusedLocals": true,
-    "noImplicitReturns": true,
+    "allowUnusedLabels": false,
     "noUnusedParameters": true,
-    "noUncheckedIndexedAccess": true,
+    "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
 
-    /* Emit and compilation behavior */
-    "noEmitOnError": true,
-    "importHelpers": true,
-    "removeComments": true,
+    // Strictness
+    "strict": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
+
+    // Modules
+    "esModuleInterop": true,
+    "isolatedModules": true,
     "resolveJsonModule": true,
-    "rewriteRelativeImportExtensions": true,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": true,
+    "allowImportingTsExtensions": true,
 
-    /* Path resolution */
+    // Path Aliases
     "baseUrl": "./",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "paths": { "@/*": ["./src/*"] },
-    "typeRoots": ["./node_modules/@types", "./src/types"]
-  },
-  "include": ["./src"],
-  "exclude": ["./node_modules", "./dist"]
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    // Output
+    "noEmit": true,
+    "outDir": "./dist"
+  }
 }
