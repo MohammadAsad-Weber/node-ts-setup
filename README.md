@@ -1,35 +1,85 @@
-# 🔰 Node.js + TypeScript Quickstart
+# 🆕 Node.js and TypeScript Boilerplate – Version 2.0.0
 
-A modern, **production-ready boilerplate** for building scalable **Node.js applications** with **TypeScript**.  
-This setup eliminates repetitive configuration and provides a clean, extensible foundation for development.
+A modern, minimal, and production-ready Node.js + TypeScript boilerplate — designed for speed, clarity, and scalability. This setup uses **TSUP** as the build engine, **TSX** for instant TypeScript execution, and **path aliases** for clean and maintainable imports.
 
-## ✨ Features at a Glance
+## ✨ Core Features and Capabilities
 
-- ⚡ **Zero-config TypeScript** – Strict type safety enabled out-of-the-box
-- 📦 **Tsup Bundling** – Ultra-fast builds optimized for Node.js
-- 🛤️ **Import Aliases** – Simplify imports with `@/*` path support
-- 🧹 **Clean Architecture** – Minimal, organized, and intuitive project layout
-- 🔄 **Live Watch Mode** – Automatic rebuilds for a smooth development experience
-- 🛠️ **Framework Agnostic** – Easily integrate Express, Fastify, or NestJS
-- 📜 **MIT License** – Free for personal and commercial use
+- **Modern TypeScript support** — Fully typed with the latest TypeScript (v5.9+).
+- **TSUP builder** — Lightning-fast builds with minimal configuration.
+- **ESM ready** — Uses `"type": "module"` for next-gen JavaScript compatibility.
+- **Import aliases** — Clean and structured import paths via `tsconfig.json`.
+- **Hot development environment** — `tsx watch` for seamless development without rebuild fatigue.
+- **Optimized output** — Builds directly to `/dist` with efficient bundling.
+- **Node.js native support** — Leverages `@types/node` for smooth Node.js API integration.
+- **MIT Licensed** — Open source and free to modify.
 
-_Suitable for microservices, CLI tools, and full-scale APIs._
-
-## 📂 Project Structure
+## 📂 Repository Structure Overview
 
 ```ini
 node-ts-setup/
-├── dist/             # Compiled output
-├── src/              # Application source code
-├── tsconfig.json     # TypeScript configuration
-├── tsup.config.ts    # Tsup build configuration
-├── package.json      # Metadata, dependencies, and scripts
-├── .gitignore        # Git ignore rules
-├── LICENSE.txt       # License file
-└── README.md         # Project documentation
+│
+├── src/
+│   ├── index.ts                 # Application entry point
+│   └── utilities/
+│       └── greet-user.ts        # Example utility function
+│
+├── tsconfig.json                # TypeScript configuration (with path aliases)
+├── tsup.config.ts               # TSUP build configuration
+├── package.json                 # Project metadata and npm scripts
+├── package-lock.json            # Dependency lock file
+├── .gitignore                   # Git ignore rules
+├── LICENSE.txt                  # MIT license
 ```
 
-## ⚙️ Installation
+## ⚙️ Overview of the TSUP Build System
+
+[**TSUP**](https://tsup.egoist.dev/) is the powerhouse behind this setup. It’s an extremely fast TypeScript bundler built on top of **esbuild**, optimized for developer experience.
+
+### 💡 Advantages of Using TSUP
+
+- **Zero-config builds** — Just run `npm run build` and it just works.
+- **Blazing fast** — Powered by esbuild, compiles and bundles TypeScript in seconds.
+- **Out-of-the-box ESM + CJS support** — Automatically handles module formats.
+- **Type declaration support** — Outputs `.d.ts` files seamlessly.
+- **Simple but flexible** — Ideal for libraries and production apps alike.
+
+> **In short:** TSUP gives you Vite-like speed for backend development — minimal setup, maximum output.
+
+## 🧭 Rationale for Using Import Path Aliases
+
+Import aliases simplify how you structure and reference your project files.
+
+> **Note:** This alias is resolved via `tsconfig.json` and mirrored in `tsup.config.ts` to ensure consistency between runtime and build paths.
+
+### 📘 Illustrative Example
+
+Instead of writing:
+
+```ts
+import { greetUser } from "../../utilities/greet-user";
+```
+
+You can write:
+
+```ts
+import { greetUser } from "@/utilities/greet-user";
+```
+
+### 🎯 Benefits of Import Path Aliasing
+
+- Cleaner and shorter import statements.
+- Easier refactoring — no breaking imports when moving files.
+- Improves project scalability and readability.
+
+## 🧩 Available NPM Scripts
+
+| Script          | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `npm run build` | Builds the project using **TSUP**                         |
+| `npm run start` | Runs the compiled code from `dist/`                       |
+| `npm run dev`   | Starts development mode using **TSX** with live reloading |
+
+## 🛠️ Setup and Installation Guide
 
 1. **Clone the Repository**
 
@@ -46,7 +96,7 @@ node-ts-setup/
 
 3. **Begin Development**
 
-   _Use the `./src` directory as your primary workspace. Create your entry point as `src/index.ts`, and structure supporting modules, services, and utilities within subdirectories as needed._
+   _Use the `./src` directory as your primary workspace. Use `src/index.ts` as entry point of your application, and structure supporting modules, services, and utilities within subdirectories as needed._
 
 4. **Run the Application**
 
@@ -59,9 +109,7 @@ node-ts-setup/
    npm start
    ```
 
-## 🤏 Manual Set-up
-
-### ❌ Without TSUP & Import Alias
+### 📝 Manual Project Setup
 
 1. **Initialize the Project**
 
@@ -74,7 +122,7 @@ node-ts-setup/
 2. **Install Dependencies**
 
    ```bash
-   npm install typescript @types/node tsx --save-dev
+   npm install typescript tsconfig-paths @types/node tsup tsx --save-dev
    ```
 
 3. **Configure TypeScript**
@@ -89,36 +137,47 @@ node-ts-setup/
    // tsconfig.json
 
    {
+     "include": ["./src"],
+     "exclude": ["./node_modules", "./dist", "**/*.test.ts"],
+
      "compilerOptions": {
-       "lib": ["ES2020"],
-       "target": "ES2020",
+       "lib": ["ES2022"],
+       "target": "ES2022",
        "module": "ESNext",
        "skipLibCheck": true,
        "moduleResolution": "bundler",
 
-       /* Strictness and safety checks */
-       "strict": true,
+       // Linting
        "noUnusedLocals": true,
-       "noImplicitReturns": true,
+       "allowUnusedLabels": false,
        "noUnusedParameters": true,
-       "noUncheckedIndexedAccess": true,
+       "allowUnreachableCode": false,
        "noFallthroughCasesInSwitch": true,
-       "noUncheckedSideEffectImports": true,
 
-       /* Emit and compilation behavior */
-       "noEmitOnError": true,
-       "importHelpers": true,
-       "removeComments": true,
+       // Strictness
+       "strict": true,
+       "noImplicitReturns": true,
+       "noImplicitOverride": true,
+       "noUncheckedIndexedAccess": true,
+
+       // Modules
+       "esModuleInterop": true,
+       "isolatedModules": true,
        "resolveJsonModule": true,
-       "rewriteRelativeImportExtensions": true,
+       "moduleDetection": "force",
+       "verbatimModuleSyntax": true,
+       "allowImportingTsExtensions": true,
 
-       /* Path resolution */
-       "outDir": "./dist",
-       "rootDir": "./src",
-       "typeRoots": ["./node_modules/@types", "./src/types"]
-     },
-     "include": ["./src"],
-     "exclude": ["./node_modules", "./dist"]
+       // Path Aliases
+       "baseUrl": "./",
+       "paths": {
+         "@/*": ["./src/*"]
+       },
+
+       // Output
+       "noEmit": true,
+       "outDir": "./dist"
+     }
    }
    ```
 
@@ -126,7 +185,45 @@ node-ts-setup/
 
    _Create an `index.ts` file inside the `./src` directory to serve as the central entry point of the codebase. This file will act as the main module that organizes and re-exports functionality from other parts of the project, ensuring cleaner imports and a more maintainable structure._
 
-5. **Update `package.json`**
+5. **Configure `tsup.config.ts`**
+
+   ```ts
+   // tsup.config.ts
+
+   import { resolve } from "path";
+   import { defineConfig } from "tsup";
+
+   export default defineConfig({
+     // Entry and Output Configuration
+     dts: true,
+     format: ["esm"],
+     target: "ES2022",
+     outDir: "./dist",
+     entry: ["./src/index.ts"],
+     tsconfig: "./tsconfig.json",
+
+     // Build Process Settings
+     clean: true,
+     shims: true,
+     minify: true,
+     sourcemap: true,
+     splitting: false,
+     treeshake: "recommended",
+
+     // Dependency and Bundling Controls
+     removeNodeProtocol: true,
+     skipNodeModulesBundle: true,
+
+     // Esbuild Customization
+     esbuildOptions(options) {
+       options.alias = {
+         "@": resolve(__dirname, "./src"),
+       };
+     },
+   });
+   ```
+
+6. **Update `package.json`**
 
    ```json
    // package.json
@@ -134,17 +231,17 @@ node-ts-setup/
    "type": "module",
    "main": "./dist/index.js",
    "scripts": {
-    "build": "tsc",
+    "build": "tsup",
     "start": "node ./dist/index.js",
     "dev": "tsx watch ./src/index.ts"
    }
    ```
 
-6. **Begin Development**
+7. **Begin Development**
 
    _Place all application logic in `./src` directory for a clean separation from build outputs and external dependencies._
 
-7. **Run the Application**
+8. **Run the Application**
 
    ```bash
    # Development
@@ -155,110 +252,45 @@ node-ts-setup/
    npm start
    ```
 
-### ✅ With Tsup & Import Aliases
+## ❓ Frequently Asked Questions (FAQs)
 
-_Building on the above setup, only the following changes/additions are require_
+**Question: Why TSUP instead of tsc or webpack?**  
+Answer: TSUP is significantly faster, requires no boilerplate config, and outputs clean bundles for both CJS and ESM — perfect for libraries and backend apps.
 
-1. **Install Additional Dependencies**
+**Question: Can I use this setup for production APIs?**  
+Answer: Absolutely. TSUP outputs clean, optimized builds that are production-ready.
 
-   ```bash
-   npm install tsconfig-paths tsup --save-dev
-   ```
+**Question: How do I add environment variables?**  
+Answer: Use a `.env` file and load it using a package like `dotenv`.
 
-2. **Update `tsconfig.json`**
+```ts
+// src/index.ts
 
-   ```json
-   // tsconfig.json
+import "dotenv/config";
+console.log(process.env.PORT);
+```
 
-   {
-     "compilerOptions": {
-       // ...
-       "baseUrl": "./",
-       "paths": { "@/*": ["./src/*"] }
-       // ...
-     }
-   }
-   ```
+**Question: Does this setup support testing frameworks like Jest or Vitest?**  
+Answer: Yes. You can easily add `vitest` or `jest` since the structure and TypeScript setup are already aligned for test integration.
 
-3. **Configure `tsup.config.ts`**
+## 🔮 Recommended Next Steps
 
-   ```ts
-   // tsup.config.ts
+- Integrate **ESLint + Prettier** for code consistency.
+- Add **Vitest** for testing support.
+- Expand `tsup.config.ts` for multi-entry or library mode builds.
+- Consider Dockerizing for deployment.
 
-   import path from "path";
-   import { defineConfig } from "tsup";
+> This setup is your foundation — clean, modern, and lightning-fast. Extend it as your project grows.
 
-   export default defineConfig({
-     format: ["esm"],
-     target: "ES2020",
-     outDir: "./dist",
-     entry: ["./src/index.ts"],
+## 📜 License Information
 
-     /* Output options */
-     dts: true,
-     clean: true,
-     minify: true,
-     sourcemap: true,
-     tsconfig: "./tsconfig.json",
+This project is distributed under the terms of the [MIT License](./LICENSE.txt).
 
-     /* Alias configuration */
-     esbuildOptions(options) {
-       options.alias = {
-         "@": path.resolve(__dirname, "./src"),
-       };
-     },
-   });
-   ```
+## 👨‍💻 Author and Acknowledgments
 
-4. **Update `package.json`**
-
-   ```json
-   // package.json
-
-   "scripts": {
-    // ...
-    "build": "tsup",
-    // ...
-   }
-   ```
-
-5. **Run the Application**
-
-   ```bash
-   # Development
-   npm run dev
-
-   # Production
-   npm run build
-   npm start
-   ```
-
-## 🚀 Roadmap
-
-- Integrate ESLint and Prettier for consistent code quality
-- Include Jest or Vitest as a default testing framework
-- Provide Docker support for containerized environments
-- Add starter templates for Express.js and Fastify
-
-## ❓ Frequently Asked Questions
-
-**Question: Why use Tsup instead of tsc?**  
-Answer: Tsup offers superior performance, tree-shaking, minification, and better support for modern Node.js compared to plain tsc.
-
-**Question: Can this be used with Express or NestJS?**  
-Answer: Absolutely. Install your preferred framework (express, fastify, or @nestjs/core) and begin development without additional configuration.
-
-**Question: Is this production-ready?**  
-Answer: Yes, the setup is minimal but optimized, making it suitable for production deployments out of the box.
-
-## 📜 License
-
-This project is licensed under the [MIT](./LICENSE.txt) License.
-
-## 👨‍💻 Author
-
-Built with ❤️ by **Mohammad Asad**  
-[Portfolio](https://mohammad-asad-portfolio.vercel.app/)
-[Linked](https://www.linkedin.com/in/mohammad-asad-091b6a217/)
-[GitHub](https://github.com/MohammadAsad-Weber)
-[X](https://x.com/IronCodeNagi)
+Developed with dedication and precision by **Mohammad Asad**.  
+Explore more about my work and professional background through the following platforms:  
+[Portfolio](https://mohammad-asad-portfolio.vercel.app/) |
+[LinkedIn](https://www.linkedin.com/in/mohammad-asad-091b6a217/) |
+[GitHub](https://github.com/MohammadAsad-Weber) |
+[X (Twitter)](https://x.com/IronCodeNagi)
